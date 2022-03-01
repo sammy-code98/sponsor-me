@@ -30,7 +30,11 @@ export default function Home() {
               className="w-full rounded-lg bg-transparent px-4 py-3 text-white placeholder-gray-50 transition duration-200 focus:outline-none"
               placeholder="Enter Amount"
             />
+            
           </div>
+          <button className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
+              <span>Sponsor</span>
+            </button>
         </div>
       </div>
     </div>
