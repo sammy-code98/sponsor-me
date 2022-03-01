@@ -1,7 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const defaultAmounts = [500, 700, 1000];
+  const [amount, setAmount] = useState(500);
   return (
     <div className>
       <Head>
@@ -30,11 +33,22 @@ export default function Home() {
               className="w-full rounded-lg bg-transparent px-4 py-3 text-white placeholder-gray-50 transition duration-200 focus:outline-none"
               placeholder="Enter Amount"
             />
-            
+          </div>
+          <div className="flex w-full items-center space-x-2">
+            {defaultAmounts.map((btnAmount) => (
+              <button
+                className={`${
+                  amount === btnAmount ? "bg-cyan-300" : "bg-gray-300"
+                }rounded-full px-6  py-4 transition duration-200`}
+                key={btnAmount}
+              >
+                ${btnAmount}
+              </button>
+            ))}
           </div>
           <button className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
-              <span>Sponsor</span>
-            </button>
+            <span>Sponsor</span>
+          </button>
         </div>
       </div>
     </div>
