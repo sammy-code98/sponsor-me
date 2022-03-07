@@ -12,7 +12,7 @@ export default function Home() {
   const createCheckoutOutSession = async () => {
     const stripe = await stripePromise;
 
-    const checkoutSession = await axios.post("/pages/api/create-checkout-session.ts", {
+    const checkoutSession = await axios.post("/api/create-checkout-session.ts", {
       amount: amount
     })
     const result = await stripe?.redirectToCheckout({
@@ -50,7 +50,7 @@ export default function Home() {
               className="w-full rounded-lg bg-transparent px-4 py-3 text-white placeholder-gray-50 transition duration-200 focus:outline-none"
               placeholder="Enter Amount"
               value={amount ? amount : ""}
-              onChange={e=>setAmount(parseInt(e.target.value))}
+              onChange={e => setAmount(parseInt(e.target.value))}
             />
           </div>
           <div className="flex w-full items-center space-x-2">
@@ -59,13 +59,13 @@ export default function Home() {
                 className={`${amount === btnAmount ? "bg-cyan-300" : "bg-gray-300"
                   }rounded-full px-6  py-4 transition duration-200`}
                 key={btnAmount}
-                onClick={()=>setAmount(btnAmount)}
+                onClick={() => setAmount(btnAmount)}
               >
                 ${btnAmount}
               </button>
             ))}
           </div>
-          <button disabled={!amount} className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
+          <button disabled={!amount} role="link"  onClick={createCheckoutOutSession} className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
             <span>Sponsor</span>
           </button>
         </div>
