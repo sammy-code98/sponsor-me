@@ -1,10 +1,27 @@
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 import Head from "next/head";
-import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
   const defaultAmounts = [500, 700, 1000];
   const [amount, setAmount] = useState(500);
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+
+  // using the api endpoint in frontend
+  const createCheckoutOutSession = async () => {
+    const stripe = await stripePromise;
+
+    const checkoutSession = await axios.post("/pages/api/create-checkout-session.ts", {
+      amount: amount
+    })
+    const result = await stripe?.redirectToCheckout({
+      sessionId: checkoutSession.data.id
+    })
+    if (result?.error) {
+      alert(result?.error.message)
+    }
+  }
   return (
     <div>
       <Head>
@@ -32,21 +49,23 @@ export default function Home() {
               type="number"
               className="w-full rounded-lg bg-transparent px-4 py-3 text-white placeholder-gray-50 transition duration-200 focus:outline-none"
               placeholder="Enter Amount"
+              value={amount ? amount : ""}
+              onChange={e=>setAmount(parseInt(e.target.value))}
             />
           </div>
           <div className="flex w-full items-center space-x-2">
             {defaultAmounts.map((btnAmount) => (
               <button
-                className={`${
-                  amount === btnAmount ? "bg-cyan-300" : "bg-gray-300"
-                }rounded-full px-6  py-4 transition duration-200`}
+                className={`${amount === btnAmount ? "bg-cyan-300" : "bg-gray-300"
+                  }rounded-full px-6  py-4 transition duration-200`}
                 key={btnAmount}
+                onClick={()=>setAmount(btnAmount)}
               >
                 ${btnAmount}
               </button>
             ))}
           </div>
-          <button className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
+          <button disabled={!amount} className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400">
             <span>Sponsor</span>
           </button>
         </div>
