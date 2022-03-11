@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await stripe.checkout.sessions.create({
     line_items: items,
     mode: "payment",
-    success_url: `${URL}/success`,
+    success_url: `${URL}/sucess`,
     cancel_url: URL,
   });
   res.status(200).json({ id: session.id });
